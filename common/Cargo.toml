@@ -12,8 +12,8 @@ publish = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-serde = { version = "1.0.203", default-features = false, features = ["derive"] }
-serde_json = "1.0.119"
+serde = { version = "1.0.208", default-features = false, features = ["derive"] }
+serde_json = "1.0.125"
 jwt-compact = { version = "0.8.0", features = [
   "p256",
   "ed25519-compact",
