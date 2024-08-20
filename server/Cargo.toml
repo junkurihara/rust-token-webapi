@@ -1,13 +1,13 @@
 [package]
 name = "rust-token-server"
 description = "Authentication server handling id token in the context of OIDC and anonymous token based on RSA blind signatures"
-version = "0.6.0"
-authors = ["Jun Kurihara"]
-homepage = "https://github.com/junkurihara/rust-token-server"
-repository = "https://github.com/junkurihara/rust-token-server"
-license = "MIT"
-readme = "../README.md"
-edition = "2021"
+authors.workspace = true
+version.workspace = true
+edition.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+readme.workspace = true
 publish = false
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

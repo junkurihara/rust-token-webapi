@@ -1,13 +1,13 @@
 [package]
 name = "rust-token-server-validator"
-version = "0.3.0"
-edition = "2021"
 description = "Validator library for `rust-token-server`"
-authors = ["Jun Kurihara"]
-homepage = "https://github.com/junkurihara/rust-token-server"
-repository = "https://github.com/junkurihara/rust-token-server"
-license = "MIT"
-readme = "../README.md"
+authors.workspace = true
+version.workspace = true
+edition.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+readme.workspace = true
 publish = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
