@@ -1,34 +1,38 @@
 [package]
 name = "rust-token-server"
-description = "Authentication server handling id token in the context of OIDC"
-version = "0.5.0"
-authors = ["Jun Kurihara"]
-homepage = "https://github.com/junkurihara/rust-token-server"
-repository = "https://github.com/junkurihara/rust-token-server"
-license = "MIT"
-readme = "../README.md"
-edition = "2021"
+description = "Authentication server handling id token in the context of OIDC and anonymous token based on RSA blind signatures"
+authors.workspace = true
+version.workspace = true
+edition.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+readme.workspace = true
 publish = false
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-libcommon = { path = "../common", package = "rust-token-server-common" }
+libcommon = { path = "../common", package = "rust-token-server-common", default-features = false }
 
 anyhow = "1.0.86"
 axum = { version = "0.7.5" }
 base64 = "0.22.1"
 chrono = "0.4.38"
-clap = { version = "4.5.4", features = ["std", "cargo", "wrap_help"] }
+clap = { version = "4.5.16", features = ["std", "cargo", "wrap_help"] }
 rand = "0.8.5"
-serde = { version = "1.0.202", features = ["derive"] }
-serde_json = "1.0.117"
-tokio = { version = "1.37.0", features = ["full"] }
+serde = { version = "1.0.208", features = ["derive"] }
+serde_json = "1.0.125"
+tokio = { version = "1.39.3", features = ["full"] }
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 sqlx = { version = "0.7.4", features = ["sqlite", "runtime-tokio-rustls"] }
-async-trait = "0.1.80"
-uuid = { version = "1.8.0", features = ["v4"] }
+async-trait = "0.1.81"
+uuid = { version = "1.10.0", features = ["v4"] }
 validator = { version = "0.18.1", features = ["derive"] }
 rust-argon2 = "2.1.0"
-url = "2.5.0"
+url = "2.5.2"
+
+[features]
+default = ["blind-signatures"]
+blind-signatures = ["libcommon/blind-signatures"]
