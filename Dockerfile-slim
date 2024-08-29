@@ -1,0 +1,52 @@
+########################################
+FROM rust:alpine AS builder
+
+ARG CFLAGS=-Ofast
+ARG BUILD_DEPS=musl-dev
+
+WORKDIR /tmp
+
+COPY . /tmp/
+
+ARG RUSTFLAGS="-C link-arg=-s"
+
+# RUN update-ca-certificates 2> /dev/null || true
+
+RUN apk add --no-cache ${BUILD_DEPS} &&\
+    export PATH="$HOME/.cargo/bin:$PATH" && \
+    echo "Building token server from source" && \
+    cargo build --release --package=rust-token-server && \
+    strip --strip-all /tmp/target/release/rust-token-server
+
+########################################
+FROM alpine:latest AS runner
+
+LABEL maintainer="Jun Kurihara"
+
+SHELL ["/bin/sh", "-x", "-c"]
+ENV SERIAL=2
+
+ARG RUNTIME_DEPS="logrotate ca-certificates su-exec bash sqlite-dev"
+
+
+# FROM base AS runner
+# LABEL maintainer="Jun Kurihara"
+
+# ARG RUNTIME_DEPS="logrotate ca-certificates gosu libsqlite3-dev"
+
+RUN apk add --no-cache ${RUNTIME_DEPS} && \
+    update-ca-certificates && \
+    mkdir -p /opt/token-server/sbin
+
+COPY --from=builder /tmp/target/release/rust-token-server /opt/token-server/sbin/
+COPY server/docker-bin/entrypoint.sh /
+COPY server/docker-bin/run.sh /
+
+RUN chmod 755 /entrypoint.sh &&\
+    chmod 755 /run.sh
+
+EXPOSE 80/udp 80/tcp
+
+CMD ["/entrypoint.sh"]
+
+ENTRYPOINT ["/entrypoint.sh"]
