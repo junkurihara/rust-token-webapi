@@ -45,7 +45,7 @@ COPY server/docker-bin/run.sh /
 RUN chmod 755 /entrypoint.sh &&\
     chmod 755 /run.sh
 
-EXPOSE 80/udp 80/tcp
+EXPOSE 8000
 
 CMD ["/entrypoint.sh"]
 
