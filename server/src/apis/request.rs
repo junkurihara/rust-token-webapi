@@ -78,3 +78,8 @@ impl<'de> Deserialize<'de> for BlindedTokenMessage {
     Ok(BlindedTokenMessage(bytes))
   }
 }
+
+#[derive(Deserialize, Debug, Clone)]
+pub struct MyInfoRequest {
+  pub auth: PasswordCredentialRequest,
+}

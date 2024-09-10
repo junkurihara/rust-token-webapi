@@ -11,6 +11,23 @@ jobs:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: id-token-server
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: "default"
+            dockerfile: ./Dockerfile
+            platforms: linux/amd64
+            # Aliases must be used only for release builds
+            aliases: |
+              jqtype/id-token-server:latest
+          - target: "slim"
+            dockerfile: ./Dockerfile-slim
+            platforms: linux/amd64
+            tags-suffix: "-slim"
+            # Aliases must be used only for release builds
+            aliases: |
+              jqtype/id-token-server:slim
 
     steps:
       - name: checkout
@@ -35,8 +52,10 @@ jobs:
           context: ./
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
-          file: ./Dockerfile
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest${{ matrix.tags-suffix }}
+            ${{ matrix.aliases }}
+          file: ${{ matrix.dockerfile }}
+          platforms: ${{ matrix.platforms }}
 
       - name: Nightly build and push x86_64
         if: ${{ github.ref_name == 'develop' }}
@@ -45,5 +64,6 @@ jobs:
           context: ./
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:nightly
-          file: ./Dockerfile
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:nightly${{ matrix.tags-suffix }}
+          file: ${{ matrix.dockerfile }}
+          platforms: ${{ matrix.platforms }}

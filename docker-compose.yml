@@ -1,25 +1,24 @@
-version: "3.9"
 services:
   token-server:
-    image: jqtype/token-server:latest
+    # image: jqtype/token-server:latest
+    image: jqtype/token-server:slim
     container_name: token-server
     build:
       context: .
-      dockerfile: ./Dockerfile
-      platforms:
-        - linux/arm64
+      # dockerfile: ./Dockerfile
+      dockerfile: ./Dockerfile-slim
     restart: unless-stopped
-    env_file: .env
+    env_file: ./server/.env
     ports:
       - 8000:8000/udp
       - 8000:8000/tcp
     healthcheck:
       test: ["CMD-SHELL", "curl --silent --fail http://localhost:8000/health || exit 1"]
     volumes:
-      - ./.env:/opt/token-server/etc/.env
-      - ${SIGNING_KEY_PATH}:/opt/token-server/etc/private_key.pem
-      - ${DATA_DIR_PATH}:/opt/token-server/var/
-      - ${LOG_DIR}:/var/log/token-server/
+      - ./server/.env:/opt/token-server/etc/.env
+    #   - ${SIGNING_KEY_PATH}:/opt/token-server/etc/private_key.pem
+    #   - ${DATA_DIR_PATH}:/opt/token-server/var/
+    #   - ${LOG_DIR}:/var/log/token-server/
     # networks:
     # net-front:
 

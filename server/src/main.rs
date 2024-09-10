@@ -10,7 +10,7 @@ mod table;
 
 // use crate::api_create_user::create_user;
 use crate::{
-  apis::{create_user, delete_user, get_tokens, health_check, jwks, list_users, refresh, update_user},
+  apis::{create_user, delete_user, get_myinfo, get_tokens, health_check, jwks, list_users, refresh, update_user},
   constants::*,
   error::*,
   log::*,
@@ -66,7 +66,8 @@ async fn define_route(shared_state: Arc<AppState>) {
     .route("/create_user", post(create_user))
     .route("/update_user", post(update_user))
     .route("/delete_user", post(delete_user))
-    .route("/list_users", post(list_users));
+    .route("/list_users", post(list_users))
+    .route("/myinfo", post(get_myinfo));
 
   #[cfg(feature = "blind-signatures")]
   let api_routes = api_routes

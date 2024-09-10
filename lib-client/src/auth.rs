@@ -3,7 +3,7 @@ use async_trait::async_trait;
 use chrono::Local;
 use libcommon::{
   token_fields::{Field, RefreshToken},
-  Claims, TokenBody, ValidationKey,
+  Claims, TokenBody, UserInfo, ValidationKey,
 };
 use serde::{de::DeserializeOwned, Serialize};
 use std::{
@@ -87,8 +87,37 @@ where
     })
   }
 
+  /// Get info
+  pub async fn get_info(&self) -> AuthResult<UserInfo> {
+    let mut login_endpoint = self.config.token_api.clone();
+    login_endpoint
+      .path_segments_mut()
+      .map_err(|_| AuthError::UrlError)?
+      .push(ENDPOINT_MYINFO_PATH);
+
+    let json_request = MyInfoRequest {
+      auth: AuthenticationReqInner {
+        username: self.config.username.clone(),
+        password: self.config.password.clone(),
+      },
+    };
+
+    let client_lock = self.http_client.read().await;
+    let res_info = client_lock
+      .post_json::<_, MyInfoResponse>(&login_endpoint, &json_request)
+      .await?;
+    drop(client_lock);
+
+    debug!("User info retrieved: {:?}", res_info.message);
+
+    Ok(res_info.info)
+  }
+
   /// Login to the authentication server
   pub async fn login(&self) -> AuthResult<()> {
+    if self.config.client_id.is_none() {
+      return Err(AuthError::NoClientId);
+    }
     let mut login_endpoint = self.config.token_api.clone();
     login_endpoint
       .path_segments_mut()
@@ -100,7 +129,7 @@ where
         username: self.config.username.clone(),
         password: self.config.password.clone(),
       },
-      client_id: self.config.client_id.clone(),
+      client_id: self.config.client_id.clone().unwrap(),
     };
 
     let client_lock = self.http_client.read().await;
@@ -148,7 +177,7 @@ where
 
     let json_request = RefreshRequest {
       refresh_token: refresh_token.into_string(),
-      client_id: Some(self.config.client_id.clone()),
+      client_id: self.config.client_id.clone(),
     };
 
     let client_lock = self.http_client.read().await;
@@ -231,6 +260,9 @@ where
 
   /// Verify id token
   async fn verify_id_token(&self) -> AuthResult<Claims> {
+    if self.config.client_id.is_none() {
+      return Err(AuthError::NoClientId);
+    }
     let token_lock = self.id_token.read().await;
     let Some(token_inner) = token_lock.as_ref() else {
       return Err(AuthError::NoIdToken);
@@ -246,7 +278,11 @@ where
     // drop(vk_lock);
 
     token
-      .verify_id_token(validation_key, &self.config.client_id, self.config.token_api.as_str())
+      .verify_id_token(
+        validation_key,
+        self.config.client_id.as_ref().unwrap(),
+        self.config.token_api.as_str(),
+      )
       .await
       .map_err(|_| AuthError::InvalidIdToken)
   }

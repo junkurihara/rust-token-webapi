@@ -47,8 +47,28 @@ ${LOG_FILE} {
 }
 EOF
 
-cp -p /etc/cron.daily/logrotate /etc/cron.hourly/
-service cron start
+# Check gosu or su-exec, determine linux distribution, and set up user
+if [ $(command -v gosu) ]; then
+  # Ubuntu Linux
+  alias gosu='gosu'
+  LINUX="Ubuntu"
+  # Setup cron
+  mkdir -p /etc/cron.15min/
+  cp -p /etc/cron.daily/logrotate /etc/cron.15min/
+  echo "*/15 * * * * root cd / && run-parts --report /etc/cron.15min" >> /etc/crontab
+  service cron start
+elif [ $(command -v su-exec) ]; then
+  # Alpine Linux
+  alias gosu='su-exec'
+  LINUX="Alpine"
+  # Setup cron
+  cp -f /etc/periodic/daily/logrotate /etc/periodic/15min
+  crond -b -l 8
+else
+  echo "Unknown distribution!"
+  exit 1
+fi
+
 
 echo "Start ID Token Server"
 
