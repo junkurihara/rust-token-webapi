@@ -19,7 +19,7 @@ pub mod token {
 pub struct AuthenticationConfig {
   pub username: String,
   pub password: String,
-  pub client_id: String,
+  pub client_id: Option<String>,
   pub token_api: Url,
 }
 
@@ -143,6 +143,9 @@ mod tests {
   async fn check_expiration() {
     let token_client = get_token_client().await;
 
+    let user_info = token_client.get_info().await.unwrap();
+    println!("user_info: {:?}", user_info);
+
     token_client.login().await.unwrap();
     assert!(token_client.token().await.is_ok());
 
@@ -199,7 +202,7 @@ mod tests {
     let token_api = std::env::var("TOKEN_ENDPOINT").unwrap().parse::<Url>().unwrap();
     let auth_config = AuthenticationConfig {
       token_api,
-      client_id: std::env::var("CLIENT_ID").unwrap(),
+      client_id: Some(std::env::var("CLIENT_ID").unwrap()),
       username: std::env::var("ADMIN_NAME").unwrap(),
       password: std::env::var("ADMIN_PASSWORD").unwrap(),
     };

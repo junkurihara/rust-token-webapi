@@ -176,7 +176,7 @@ mod tests {
     let token_api = std::env::var("TOKEN_ENDPOINT").unwrap().parse::<Url>().unwrap();
     let auth_config = AuthenticationConfig {
       token_api,
-      client_id: std::env::var("CLIENT_ID").unwrap(),
+      client_id: Some(std::env::var("CLIENT_ID").unwrap()),
       username: std::env::var("ADMIN_NAME").unwrap(),
       password: std::env::var("ADMIN_PASSWORD").unwrap(),
     };

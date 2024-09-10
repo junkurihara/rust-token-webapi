@@ -1,6 +1,7 @@
 mod claim;
 mod constants;
 mod token;
+mod user_info;
 mod validation_key;
 
 #[cfg(feature = "blind-signatures")]
@@ -16,4 +17,5 @@ pub mod blind_sig {
 }
 
 pub use token::{TokenBody, TokenMeta};
+pub use user_info::UserInfo;
 pub use validation_key::{Claims, SigningKey, ValidationKey, ValidationOptions};
