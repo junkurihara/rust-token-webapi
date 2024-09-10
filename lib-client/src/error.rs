@@ -5,6 +5,9 @@ pub(super) type AuthResult<T> = Result<T, AuthError>;
 /// Describes things that can go wrong in the authentication process
 #[derive(Debug, Error)]
 pub enum AuthError {
+  #[error("No client_id in the configuration. unable to get token")]
+  NoClientId,
+
   #[error("TokenHttpClient response is not 20x: {source}")]
   TokenHttpClientErrorResponse {
     source: Box<dyn std::error::Error + Send + Sync>,
