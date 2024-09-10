@@ -1,6 +1,6 @@
 use super::{request::RefreshRequest, response::TokensResponse};
 use crate::{
-  constants::DEFAUTL_CLIENT_ID,
+  constants::DEFAULT_CLIENT_ID,
   log::*,
   state::AppState,
   table::{UserSearchKey, UserTable},
@@ -55,18 +55,13 @@ pub async fn refresh(
     debug!("client_id is ok: {}.", client_id.as_str());
     client_id
   } else {
-    let Ok(cid) = ClientId::new(DEFAUTL_CLIENT_ID) else {
+    let Ok(cid) = ClientId::new(DEFAULT_CLIENT_ID) else {
       return Err(RefreshError::TokenCreationFailed);
     };
     cid
   };
   // check user existence
-  let Ok(entry_opt) = state
-    .table
-    .refresh_token
-    .prune_and_find(&refresh_token, &client_id)
-    .await
-  else {
+  let Ok(entry_opt) = state.table.refresh_token.prune_and_find(&refresh_token, &client_id).await else {
     return Err(RefreshError::TokenCreationFailed);
   };
   let Some(entry) = entry_opt else {

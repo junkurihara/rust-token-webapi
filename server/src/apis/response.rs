@@ -1,4 +1,4 @@
-use libcommon::{TokenBody, TokenMeta};
+use libcommon::{TokenBody, TokenMeta, UserInfo};
 use serde::Serialize;
 
 #[cfg(feature = "blind-signatures")]
@@ -36,5 +36,11 @@ pub struct ListUserResponseInner {
 pub struct BlindSignResponse {
   pub blind_signature: BlindSignature,
   pub expires_at: u64,
+  pub message: String,
+}
+
+#[derive(Serialize, Debug, Clone)]
+pub struct MyInfoResponse {
+  pub info: UserInfo,
   pub message: String,
 }

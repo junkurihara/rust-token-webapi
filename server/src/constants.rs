@@ -32,7 +32,7 @@ pub const ARGON2_SALT_LEN: usize = 32;
 
 // ID Token settings
 /// Default client ID if no client id check is required
-pub const DEFAUTL_CLIENT_ID: &str = "none";
+pub const DEFAULT_CLIENT_ID: &str = "none";
 /// Default duration of refresh token validity in minutes
 /// TODO: 30days, clapで設定できるように
 pub const REFRESH_TOKEN_DURATION_MINS: usize = 30 * 24 * 60;

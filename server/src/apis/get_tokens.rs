@@ -1,6 +1,6 @@
 use super::{request::TokensRequest, response::TokensResponse};
 use crate::{
-  constants::DEFAUTL_CLIENT_ID,
+  constants::DEFAULT_CLIENT_ID,
   entity::{Entity, RefreshTokenInfo},
   log::*,
   state::AppState,
@@ -68,7 +68,7 @@ pub async fn get_tokens(
     debug!("{} is verified by client_id {}.", username.as_str(), client_id.as_str());
     client_id
   } else {
-    let Ok(cid) = ClientId::new(DEFAUTL_CLIENT_ID) else {
+    let Ok(cid) = ClientId::new(DEFAULT_CLIENT_ID) else {
       return Err(GetTokensError::TokenCreationFailed);
     };
     cid

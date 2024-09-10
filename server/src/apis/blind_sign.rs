@@ -1,6 +1,6 @@
 use super::{request::BlindSignRequest, response::BlindSignResponse};
 use crate::{
-  constants::DEFAUTL_CLIENT_ID,
+  constants::DEFAULT_CLIENT_ID,
   entity::Entity,
   log::*,
   state::AppState,
@@ -78,7 +78,7 @@ pub async fn blind_sign(
         return Err(BlindSignError::UnauthorizedClientApp);
       }
       debug!("{} is verified by client_id {}.", username.as_str(), client_id.as_str());
-    } else if ClientId::new(DEFAUTL_CLIENT_ID).is_err() {
+    } else if ClientId::new(DEFAULT_CLIENT_ID).is_err() {
       return Err(BlindSignError::SignFailed);
     };
 
