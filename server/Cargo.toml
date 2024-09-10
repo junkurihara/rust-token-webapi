@@ -15,19 +15,19 @@ publish = false
 [dependencies]
 libcommon = { path = "../common", package = "rust-token-server-common", default-features = false }
 
-anyhow = "1.0.86"
+anyhow = "1.0.87"
 axum = { version = "0.7.5" }
 base64 = "0.22.1"
 chrono = "0.4.38"
-clap = { version = "4.5.16", features = ["std", "cargo", "wrap_help"] }
+clap = { version = "4.5.17", features = ["std", "cargo", "wrap_help"] }
 rand = "0.8.5"
-serde = { version = "1.0.209", features = ["derive"] }
-serde_json = "1.0.127"
-tokio = { version = "1.39.3", features = ["full"] }
+serde = { version = "1.0.210", features = ["derive"] }
+serde_json = "1.0.128"
+tokio = { version = "1.40.0", features = ["full"] }
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 sqlx = { version = "0.7.4", features = ["sqlite", "runtime-tokio-rustls"] }
-async-trait = "0.1.81"
+async-trait = "0.1.82"
 uuid = { version = "1.10.0", features = ["v4"] }
 validator = { version = "0.18.1", features = ["derive"] }
 rust-argon2 = "2.1.0"

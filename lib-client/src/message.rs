@@ -1,4 +1,4 @@
-use libcommon::{TokenBody, TokenMeta};
+use libcommon::{TokenBody, TokenMeta, UserInfo};
 use serde::{ser::SerializeStruct, Deserialize, Serialize};
 
 /// Authentication request
@@ -14,12 +14,25 @@ pub(super) struct AuthenticationReqInner {
   pub password: String,
 }
 
+/// Get my info request
+#[derive(Serialize, Debug)]
+pub(super) struct MyInfoRequest {
+  pub auth: AuthenticationReqInner,
+}
+
 #[allow(dead_code)]
 #[derive(Deserialize, Debug)]
 /// Auth response
 pub(super) struct AuthenticationResponse {
   pub token: TokenBody,
   pub metadata: TokenMeta,
+  pub message: String,
+}
+
+#[derive(Deserialize, Debug)]
+/// My info response
+pub(super) struct MyInfoResponse {
+  pub info: UserInfo,
   pub message: String,
 }
 

@@ -143,6 +143,9 @@ mod tests {
   async fn check_expiration() {
     let token_client = get_token_client().await;
 
+    let user_info = token_client.get_info().await.unwrap();
+    println!("user_info: {:?}", user_info);
+
     token_client.login().await.unwrap();
     assert!(token_client.token().await.is_ok());
 

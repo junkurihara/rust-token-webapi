@@ -3,7 +3,7 @@ use async_trait::async_trait;
 use chrono::Local;
 use libcommon::{
   token_fields::{Field, RefreshToken},
-  Claims, TokenBody, ValidationKey,
+  Claims, TokenBody, UserInfo, ValidationKey,
 };
 use serde::{de::DeserializeOwned, Serialize};
 use std::{
@@ -85,6 +85,32 @@ where
       #[cfg(feature = "blind-signatures")]
       blind_expires_at: Arc::new(RwLock::new(None)),
     })
+  }
+
+  /// Get info
+  pub async fn get_info(&self) -> AuthResult<UserInfo> {
+    let mut login_endpoint = self.config.token_api.clone();
+    login_endpoint
+      .path_segments_mut()
+      .map_err(|_| AuthError::UrlError)?
+      .push(ENDPOINT_MYINFO_PATH);
+
+    let json_request = MyInfoRequest {
+      auth: AuthenticationReqInner {
+        username: self.config.username.clone(),
+        password: self.config.password.clone(),
+      },
+    };
+
+    let client_lock = self.http_client.read().await;
+    let res_info = client_lock
+      .post_json::<_, MyInfoResponse>(&login_endpoint, &json_request)
+      .await?;
+    drop(client_lock);
+
+    debug!("User info retrieved: {:?}", res_info.message);
+
+    Ok(res_info.info)
   }
 
   /// Login to the authentication server
