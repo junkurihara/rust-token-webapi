@@ -16,7 +16,7 @@ publish = false
 libcommon = { path = "../common", package = "rust-token-server-common", default-features = false }
 
 tracing = "0.1.40"
-anyhow = "1.0.87"
+anyhow = "1.0.89"
 url = "2.5.2"
 serde = { version = "1.0.210", features = ["derive"] }
 serde_json = "1.0.128"
@@ -28,17 +28,17 @@ tokio = { version = "1.40.0", features = [
   "sync",
   "macros",
 ] }
-async-trait = "0.1.82"
-thiserror = "1.0.63"
+async-trait = "0.1.83"
+thiserror = "1.0.64"
 rand = { version = "0.8.5", default-features = false, features = [
   "getrandom",
 ], optional = true }
 base64 = { version = "0.22.1", optional = true }
-reqwest = { version = "0.12.7", default-features = false, optional = true }
+reqwest = { version = "0.12.8", default-features = false, optional = true }
 
 
 [dev-dependencies]
-reqwest = { version = "0.12.7", default-features = false, features = [
+reqwest = { version = "0.12.8", default-features = false, features = [
   "json",
   "hickory-dns",
   "default",

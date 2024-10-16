@@ -19,7 +19,7 @@ jwt-compact = { version = "0.8.0", features = [
   "ed25519-compact",
   "rsa",             # for blind-rsa-signatures
 ] }
-anyhow = "1.0.87"
+anyhow = "1.0.89"
 chrono = { version = "0.4.38", default-features = false }
 validator = { version = "0.18.1", features = ["derive"] }
 rand = "0.8.5"
