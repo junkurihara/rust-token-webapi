@@ -56,7 +56,6 @@ pub(super) struct CreateUserRequest {
 }
 #[derive(Serialize, Debug)]
 /// Create user request inner
-
 pub(super) struct CreateUserReqInner {
   pub username: String,
   pub password: String,
