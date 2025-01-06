@@ -14,23 +14,23 @@ publish = false
 [dependencies]
 libcommon = { path = "../common", package = "rust-token-server-common", default-features = false }
 
-anyhow = "1.0.87"
-tracing = "0.1.40"
-async-trait = "0.1.82"
-thiserror = "1.0.63"
-url = "2.5.2"
-serde_json = "1.0.128"
-futures = { version = "0.3.30", default-features = false, features = ["std"] }
-tokio = { version = "1.40.0", default-features = false, features = [
+anyhow = "1.0.95"
+tracing = "0.1.41"
+async-trait = "0.1.84"
+thiserror = "2.0.9"
+url = "2.5.4"
+serde_json = "1.0.134"
+futures = { version = "0.3.31", default-features = false, features = ["std"] }
+tokio = { version = "1.42.0", default-features = false, features = [
   "net",
   "macros",
 ] }
-serde = { version = "1.0.210", default-features = false, features = ["derive"] }
-rustc-hash = "2.0.0"
+serde = { version = "1.0.217", default-features = false, features = ["derive"] }
+rustc-hash = "2.1.0"
 base64 = "0.22.1"
 
 [dev-dependencies]
-reqwest = { version = "0.12.7", default-features = false, features = [
+reqwest = { version = "0.12.12", default-features = false, features = [
   "json",
   "hickory-dns",
   "default",

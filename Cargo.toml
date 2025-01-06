@@ -4,7 +4,7 @@ members = ["lib-validator", "lib-client", "server", "common"]
 resolver = "2"
 
 [workspace.package]
-version = "0.7.1"
+version = "0.7.2"
 authors = ["Jun Kurihara"]
 edition = "2021"
 homepage = "https://github.com/junkurihara/rust-token-server"
